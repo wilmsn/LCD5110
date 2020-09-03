@@ -1,0 +1,18 @@
+LCD5110         KEYWORD1
+
+InitLCD	        KEYWORD2
+setContrast     KEYWORD2
+setDisplayMode  KEYWORD2
+setBiasSystem   KEYWORD2
+setFont         KEYWORD2
+setCursor       KEYWORD2
+clear           KEYWORD2
+begin           KEYWORD2
+draw            KEYWORD2
+on              KEYWORD2
+off             KEYWORD2
+setPixel        KEYWORD2
+clrPixel        KEYWORD2
+print           KEYWORD2
+println         KEYWORD2
+drawRect        KEYWORD2
