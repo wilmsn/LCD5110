@@ -13,7 +13,11 @@ void setup() {
   lcd.begin();
   
   pinMode(LIGHT, OUTPUT);
-  digitalWrite( LIGHT , LOW);
+  digitalWrite( LIGHT , HIGH);
+  
+}
+
+void loop() {
   delay(1000);
   lcd.setCursor(0,10);
   lcd.println("   LCD");
@@ -21,33 +25,30 @@ void setup() {
   lcd.println("Displaytest");
   lcd.draw();
   delay(5000); 
-  digitalWrite( LIGHT , HIGH);
-  delay(200); 
-  digitalWrite( LIGHT , LOW);
   lcd.clear();
   lcd.setCursor(0,20);
-  lcd.println("Display");
+  lcd.println("  Display");
   lcd.println("   blank ");
   lcd.draw();
   delay(200); 
   lcd.setDisplayMode(LCD5110::blank);
   delay(1000); 
   lcd.setCursor(0,20);
-  lcd.println("Display");
-  lcd.println("   invers");
+  lcd.println(" Display");
+  lcd.println("  invers");
   lcd.draw();
   lcd.setDisplayMode(LCD5110::invers);
   delay(1000); 
   lcd.setCursor(0,20);
-  lcd.println("Display");
+  lcd.println(" Display");
   lcd.println("   allon ");
   lcd.draw();
   delay(200); 
   lcd.setDisplayMode(LCD5110::allon);
   delay(1000); 
   lcd.setCursor(0,20);
-  lcd.println("Display");
-  lcd.println("   normal");
+  lcd.println(" Display");
+  lcd.println("  normal");
   lcd.draw();
   lcd.setDisplayMode(LCD5110::normal);
   delay(1000); 
@@ -85,10 +86,12 @@ void setup() {
   }
   lcd.setContrast(65);
   delay(1000); 
-  
-  digitalWrite( LIGHT , HIGH);
-  delay(200); 
-  digitalWrite( LIGHT , LOW);
+  lcd.clear();
+  lcd.setFont(LCD5110::small);
+  lcd.println(" small");
+  lcd.println(" Font ");
+  lcd.draw();
+  delay(1000);  
   lcd.clear();    
   lcd.println("Ein beliebiger Text");
   lcd.println("println() ");
@@ -108,7 +111,43 @@ void setup() {
   lcd.println("Nachkommastellen");
   lcd.draw();
   delay(3000);
-  lcd.clear();    
+  lcd.clear();
+  lcd.setFont(LCD5110::small);
+  lcd.println(" medium");
+  lcd.println(" Font  ");
+  lcd.println(" ");
+  lcd.println(" nur  ");
+  lcd.println(" Zahlen");
+  lcd.draw();
+  delay(1000);
+  lcd.clear();
+  lcd.setFont(LCD5110::medium);
+  lcd.println("12345");
+  lcd.println("67890");
+  lcd.println("23,4%");
+  lcd.draw();
+  delay(3000);
+  lcd.clear();
+  lcd.setFont(LCD5110::small);
+  lcd.println(" big");
+  lcd.println(" Font  ");
+  lcd.println(" ");
+  lcd.println(" nur  ");
+  lcd.println(" Zahlen");
+  lcd.draw();
+  delay(1000);
+  lcd.clear();
+  lcd.setFont(LCD5110::big);
+  lcd.println("12345");
+  lcd.println("67890");
+  lcd.draw();
+  delay(3000);
+  lcd.clear();
+  lcd.println("45%");
+  lcd.draw();
+  delay(3000);
+  lcd.clear();
+  lcd.setFont(LCD5110::small);
   lcd.drawRect(10,10,50,10);
   lcd.setCursor(12,12);
   lcd.print("Rahmen");
@@ -126,10 +165,6 @@ void setup() {
   lcd.setCursor(0,35);
   lcd.print("geloescht");
   lcd.draw();
-  
-}
-
-void loop() {
-  // put your main code here, to run repeatedly:
-
+  delay(3000);
+  lcd.clear();
 }

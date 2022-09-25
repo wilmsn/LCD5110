@@ -1,26 +1,7 @@
 /*********************************************************************
-This is a library for monochrome OLEDs based on SSD1306 drivers
-It is NOT a complete Library if you are looking for all the features
-this display can do! This Library has a very small Memory/RAM footprint (~377Byte)
-so you can combine it with other libraries and can still run it on an Arduino UNO.
-There is no graphic implemented and only 2 simple fixed fonts (8*8 and 8*6).
+This is a library for the Noika monochrome LCD based on the PCD8544 driver.
 
-I just tested it with a 128x64 Display.
-
-Function:
-It's just a simple textfield with 8 lines (default). It works like the output 
-of the serial monitor. With print/println you will write to the last line.
-Example:
-	display.print("Test ");
-	display.print(56.8);
-	display.println("V");
-Will produce this output in the last line of the display:
-	Test 56.8V
-With the next display.print a new line will be written and you will find this text 
-on the secondlast line.
-
-This library is licensed under the GNU GPLv3 (https://www.gnu.org/licenses/gpl.html) open source license.
-
+Implemented functions see below!
 
 **********************************************************************/
 
@@ -64,6 +45,8 @@ This library is licensed under the GNU GPLv3 (https://www.gnu.org/licenses/gpl.h
 #define DISPLAY_ROW           48
 #define BUFFER_ROW            6
 #define FONT_SMALL_X          5
+#define FONT_MEDIUM_X         10
+#define FONT_MEDIUM_Y         16
 #define FONT_BIG_X            15
 #define FONT_BIG_Y            24
 
@@ -72,7 +55,7 @@ This library is licensed under the GNU GPLv3 (https://www.gnu.org/licenses/gpl.h
 class LCD5110 : public Print {
 
     public:
-        enum font_t { small, big };
+        enum font_t { small=0, medium=1, big=2 };
         enum displaymode_t { blank = DISPLAYMODEBLANK, normal = DISPLAYMODENORMAL, allon = DISPLAYMODEALLSEGON, invers = DISPLAYMODEINVERSE }; 
 
     private:
@@ -95,7 +78,7 @@ class LCD5110 : public Print {
         font_t myfont;
 // Methode zum Drucken eines Zeichens.
 // Diese Methode wird zwingend benötigt damit die .print() und .println() Funktion genutzt werden kann        
-		size_t write(uint8_t c);
+	size_t write(uint8_t c);
 // Führt einen HW-Reset durch        
         void doReset(void);
 // Funktion um (Display-)Daten zu senden        
@@ -115,7 +98,7 @@ class LCD5110 : public Print {
 //    framebuffer[x][displayRow] |= (1 << cy);
 //    ==> Setzt ein Pixel an der Position x,y        
         void getFBYcoord(uint8_t cy, uint8_t *p_displayRow, uint8_t *p_cy);
-// Folgende Segmente werden für den "big" Font genutzt. Hier wird ein 7 Segment Display als Vorlage genutzt
+// Folgende Segmente werden für den "medium" und "big" Font genutzt. Hier wird ein 7 Segment Display als Vorlage genutzt
 // Segmentbezeichnung ist wie folgt:
 //
 //    ==A
@@ -124,14 +107,47 @@ class LCD5110 : public Print {
 // E |  | C
 //    ==D
 // P ist der Dezimalpunkt   
-        void segment_a(uint8_t x, uint8_t y);
-        void segment_b(uint8_t x, uint8_t y);
-        void segment_c(uint8_t x, uint8_t y);
-        void segment_d(uint8_t x, uint8_t y);
-        void segment_e(uint8_t x, uint8_t y);
-        void segment_f(uint8_t x, uint8_t y);
-        void segment_g(uint8_t x, uint8_t y);
-        void segment_p(uint8_t x, uint8_t y);
+// 
+// Die Abmessungen (x * y):
+// big:     12 * 24 Pixel
+// medium:   8 * 16 Pixel
+// Segment Layout   MEDIUM                               BIG
+//  0123456789012345678901234567890123456789012345678901234567890123456789
+//
+//0 AAAAAAAA  AAAAAAAAAAAAA       XXXXX   X XXXXXXX     X
+//1 FAAAAAAB  FAAAAAAAAAAAB       X...X   X X.....X     X
+//2 FF....BB  FFAAAAAAAAABB       X...X  X  X.....X    X
+//3 FF....BB  FFF.......BBB       XXXXX  X  X.....X    X
+//4 FF....BB  FFF.......BBB             X   X.....X   X 
+//5 FF....BB  FFF.......BBB            X    XXXXXXX   X
+//6 FGGGGGGB  FFF.......BBB           X              X
+//7 EGGGGGGC  FFF.......BBB           X              X
+//8 EE....CC  FFF.......BBB          X              X
+//9 EE....CC  FFF.......BBB         X               X
+//0 EE....CC  FGGGGGGGGGGGB        X  XXXXX        X
+//1 EE....CC  GGGGGGGGGGGGG        X  X...X       X
+//2 EDDDDDDC  EGGGGGGGGGGGC       X   X...X      X
+//3 DDDDDDDD  EEE.......CCC       X   XXXXX     X
+//4           EEE.......CCC                     X
+//5           EEE.......CCC                    X
+//6           EEE.......CCC                    X
+//7           EEE.......CCC                   X    XXXXXXX
+//8           EEE.......CCC                   X    X.....X
+//9           EEE.......CCC                  X     X.....X
+//0           EEDDDDDDDDDCC                  X     X.....X
+//1           EDDDDDDDDDDDC                 X      X.....X
+//2           DDDDDDDDDDDDD                 X      XXXXXXX 
+//3
+
+//
+        void segment_a(uint8_t x, uint8_t y, font_t f=big);
+        void segment_b(uint8_t x, uint8_t y, font_t f=big);
+        void segment_c(uint8_t x, uint8_t y, font_t f=big);
+        void segment_d(uint8_t x, uint8_t y, font_t f=big);
+        void segment_e(uint8_t x, uint8_t y, font_t f=big);
+        void segment_f(uint8_t x, uint8_t y, font_t f=big);
+        void segment_g(uint8_t x, uint8_t y, font_t f=big);
+        void segment_p(uint8_t x, uint8_t y, font_t f=big);
 
     public:
 // Der Konstruktor    
@@ -177,6 +193,9 @@ class LCD5110 : public Print {
 // Aufruf: drawRect(x1, y1, x2, y2, false, true, false);
         void drawRect(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2, bool drawBorder, bool eraseInside, bool fillBlack);
 };
+
+
+
 
 
 #endif /* _LCD5110_H_ */

@@ -120,8 +120,18 @@ size_t LCD5110::write(uint8_t c){
     getFBYcoord(cursor_y, &displayRow, &cy);
 	// CF und LF sorgen für Zeilenumbruch
 	if (c == 10 || c == 13) {
-       cursor_x=0;	
-       cursor_y+=8;
+        cursor_x=0;	
+        switch (myfont) {
+            case small:  
+                cursor_y+=8;
+            break;
+            case medium:  
+                cursor_y+=FONT_MEDIUM_Y;
+            break;
+            case big:  
+                cursor_y+=FONT_BIG_Y;
+            break;
+        }
     }
 	if (myfont == small && c > 31 && c < 127) {
 		retval = 1;
@@ -145,104 +155,191 @@ size_t LCD5110::write(uint8_t c){
         }
 		cursor_x += 7;
 	}
-	if (myfont == big && ((c > 47 && c < 58) || c == 44 || c == 45 || c == 46 || c == 32 || c == 42 )) {
+	if ((myfont == big || myfont == medium) && ((c > 47 && c < 58) || c == 44 || c == 45 || c == 46 || c == 32 || c == 42 || c == 37)) {
 		retval = 1;
-        if (c > 47 && c < 58) drawRect(cursor_x, cursor_y, FONT_BIG_X, FONT_BIG_Y,false,true,false);
+        if ((c > 47 && c < 58) || c == 37) {
+            if (myfont == big) {
+                drawRect(cursor_x, cursor_y, FONT_BIG_X, FONT_BIG_Y,false,true,false);
+            } else {
+                drawRect(cursor_x, cursor_y, FONT_MEDIUM_X, FONT_MEDIUM_Y,false,true,false);
+            }
+        }
         switch (c) {
+            case 37:  // %
+                if (myfont == big) {
+                    for (uint8_t x=0; x<7; x++) setPixel(cursor_x+x,cursor_y+0);
+                    setPixel(cursor_x+0,cursor_y+1);
+                    setPixel(cursor_x+0,cursor_y+2);
+                    setPixel(cursor_x+0,cursor_y+3);
+                    setPixel(cursor_x+0,cursor_y+4);
+                    setPixel(cursor_x+6,cursor_y+1);
+                    setPixel(cursor_x+6,cursor_y+2);
+                    setPixel(cursor_x+6,cursor_y+3);
+                    setPixel(cursor_x+6,cursor_y+4);
+                    for (uint8_t x=0; x<7; x++) setPixel(cursor_x+x,cursor_y+5);
+                    for (uint8_t x=7; x<13; x++) setPixel(cursor_x+x,cursor_y+17);
+                    setPixel(cursor_x+7,cursor_y+18);
+                    setPixel(cursor_x+7,cursor_y+19);
+                    setPixel(cursor_x+7,cursor_y+20);
+                    setPixel(cursor_x+7,cursor_y+21);
+                    setPixel(cursor_x+12,cursor_y+18);
+                    setPixel(cursor_x+12,cursor_y+19);
+                    setPixel(cursor_x+12,cursor_y+20);
+                    setPixel(cursor_x+12,cursor_y+21);
+                    for (uint8_t x=7; x<13; x++) setPixel(cursor_x+x,cursor_y+22);
+                    setPixel(cursor_x+12,cursor_y+0);
+                    setPixel(cursor_x+12,cursor_y+1);
+                    setPixel(cursor_x+11,cursor_y+2);
+                    setPixel(cursor_x+11,cursor_y+3);
+                    setPixel(cursor_x+10,cursor_y+4);
+                    setPixel(cursor_x+10,cursor_y+5);
+                    setPixel(cursor_x+9,cursor_y+6);
+                    setPixel(cursor_x+9,cursor_y+7);
+                    setPixel(cursor_x+8,cursor_y+8);
+                    setPixel(cursor_x+8,cursor_y+9);
+                    setPixel(cursor_x+7,cursor_y+10);
+                    setPixel(cursor_x+6,cursor_y+11);
+                    setPixel(cursor_x+5,cursor_y+12);
+                    setPixel(cursor_x+4,cursor_y+13);
+                    setPixel(cursor_x+4,cursor_y+14);
+                    setPixel(cursor_x+3,cursor_y+15);
+                    setPixel(cursor_x+3,cursor_y+16);
+                    setPixel(cursor_x+2,cursor_y+17);
+                    setPixel(cursor_x+2,cursor_y+18);
+                    setPixel(cursor_x+1,cursor_y+19);
+                    setPixel(cursor_x+1,cursor_y+20);
+                    setPixel(cursor_x+0,cursor_y+21);
+                    setPixel(cursor_x+0,cursor_y+22);
+                    cursor_x += FONT_BIG_X; 
+                } else {
+                    for (uint8_t x=0; x<5; x++) setPixel(cursor_x+x,cursor_y+0);
+                    setPixel(cursor_x+0,cursor_y+1);
+                    setPixel(cursor_x+0,cursor_y+2);
+                    setPixel(cursor_x+4,cursor_y+1);
+                    setPixel(cursor_x+4,cursor_y+2);
+                    for (uint8_t x=0; x<5; x++) setPixel(cursor_x+x,cursor_y+3);
+                    for (uint8_t x=4; x<9; x++) setPixel(cursor_x+x,cursor_y+10);
+                    setPixel(cursor_x+4,cursor_y+11);
+                    setPixel(cursor_x+4,cursor_y+12);
+                    setPixel(cursor_x+8,cursor_y+11);
+                    setPixel(cursor_x+8,cursor_y+12);
+                    for (uint8_t x=4; x<9; x++) setPixel(cursor_x+x,cursor_y+13);
+                    setPixel(cursor_x+8,cursor_y+0);
+                    setPixel(cursor_x+8,cursor_y+1);
+                    setPixel(cursor_x+7,cursor_y+2);
+                    setPixel(cursor_x+7,cursor_y+3);
+                    setPixel(cursor_x+6,cursor_y+4);
+                    setPixel(cursor_x+5,cursor_y+5);
+                    setPixel(cursor_x+4,cursor_y+6);
+                    setPixel(cursor_x+4,cursor_y+7);
+                    setPixel(cursor_x+3,cursor_y+8);
+                    setPixel(cursor_x+2,cursor_y+9);
+                    setPixel(cursor_x+1,cursor_y+10);
+                    setPixel(cursor_x+1,cursor_y+11);
+                    setPixel(cursor_x+0,cursor_y+12);
+                    setPixel(cursor_x+0,cursor_y+13);
+                    cursor_x += FONT_MEDIUM_X;
+                }
+                break;
            case 48:  // 0
-               segment_a(cursor_x, cursor_y);
-               segment_b(cursor_x, cursor_y);
-               segment_c(cursor_x, cursor_y);
-               segment_d(cursor_x, cursor_y);
-               segment_e(cursor_x, cursor_y);
-               segment_f(cursor_x, cursor_y);
-               cursor_x += FONT_BIG_X;
+               segment_a(cursor_x, cursor_y, myfont);
+               segment_b(cursor_x, cursor_y, myfont);
+               segment_c(cursor_x, cursor_y, myfont);
+               segment_d(cursor_x, cursor_y, myfont);
+               segment_e(cursor_x, cursor_y, myfont);
+               segment_f(cursor_x, cursor_y, myfont);
+               if (myfont == big) cursor_x += FONT_BIG_X; else cursor_x += FONT_MEDIUM_X;
                break;
            case 49:  // 1
-               segment_b(cursor_x, cursor_y);
-               segment_c(cursor_x, cursor_y);
-               cursor_x += FONT_BIG_X;
+               segment_b(cursor_x, cursor_y, myfont);
+               segment_c(cursor_x, cursor_y, myfont);
+               if (myfont == big) cursor_x += FONT_BIG_X; else cursor_x += FONT_MEDIUM_X;
                break;
            case 50:  // 2
-               segment_a(cursor_x, cursor_y);
-               segment_b(cursor_x, cursor_y);
-               segment_g(cursor_x, cursor_y);
-               segment_e(cursor_x, cursor_y);
-               segment_d(cursor_x, cursor_y);
-               cursor_x += FONT_BIG_X;
+               segment_a(cursor_x, cursor_y, myfont);
+               segment_b(cursor_x, cursor_y, myfont);
+               segment_g(cursor_x, cursor_y, myfont);
+               segment_e(cursor_x, cursor_y, myfont);
+               segment_d(cursor_x, cursor_y, myfont);
+               if (myfont == big) cursor_x += FONT_BIG_X; else cursor_x += FONT_MEDIUM_X;
                break;
            case 51:  // 3
-               segment_a(cursor_x, cursor_y);
-               segment_b(cursor_x, cursor_y);
-               segment_c(cursor_x, cursor_y);
-               segment_d(cursor_x, cursor_y);
-               segment_g(cursor_x, cursor_y);
-               cursor_x += FONT_BIG_X;
+               segment_a(cursor_x, cursor_y, myfont);
+               segment_b(cursor_x, cursor_y, myfont);
+               segment_c(cursor_x, cursor_y, myfont);
+               segment_d(cursor_x, cursor_y, myfont);
+               segment_g(cursor_x, cursor_y, myfont);
+               if (myfont == big) cursor_x += FONT_BIG_X; else cursor_x += FONT_MEDIUM_X;
                break;
            case 52:  // 4
-               segment_b(cursor_x, cursor_y);
-               segment_c(cursor_x, cursor_y);
-               segment_g(cursor_x, cursor_y);
-               segment_f(cursor_x, cursor_y);
-               cursor_x += FONT_BIG_X;
+               segment_b(cursor_x, cursor_y, myfont);
+               segment_c(cursor_x, cursor_y, myfont);
+               segment_g(cursor_x, cursor_y, myfont);
+               segment_f(cursor_x, cursor_y, myfont);
+               if (myfont == big) cursor_x += FONT_BIG_X; else cursor_x += FONT_MEDIUM_X;
                break;
            case 53:  // 5
-               segment_a(cursor_x, cursor_y);
-               segment_f(cursor_x, cursor_y);
-               segment_g(cursor_x, cursor_y);
-               segment_c(cursor_x, cursor_y);
-               segment_d(cursor_x, cursor_y);
-               cursor_x += FONT_BIG_X;
+               segment_a(cursor_x, cursor_y, myfont);
+               segment_f(cursor_x, cursor_y, myfont);
+               segment_g(cursor_x, cursor_y, myfont);
+               segment_c(cursor_x, cursor_y, myfont);
+               segment_d(cursor_x, cursor_y, myfont);
+               if (myfont == big) cursor_x += FONT_BIG_X; else cursor_x += FONT_MEDIUM_X;
                break;
            case 54:  // 6
-               segment_a(cursor_x, cursor_y);
-               segment_f(cursor_x, cursor_y);
-               segment_g(cursor_x, cursor_y);
-               segment_c(cursor_x, cursor_y);
-               segment_d(cursor_x, cursor_y);
-               segment_e(cursor_x, cursor_y);
-               cursor_x += FONT_BIG_X;
+               segment_a(cursor_x, cursor_y, myfont);
+               segment_f(cursor_x, cursor_y, myfont);
+               segment_g(cursor_x, cursor_y, myfont);
+               segment_c(cursor_x, cursor_y, myfont);
+               segment_d(cursor_x, cursor_y, myfont);
+               segment_e(cursor_x, cursor_y, myfont);
+               if (myfont == big) cursor_x += FONT_BIG_X; else cursor_x += FONT_MEDIUM_X;
                break;
            case 55:  // 7
-               segment_a(cursor_x, cursor_y);
-               segment_b(cursor_x, cursor_y);
-               segment_c(cursor_x, cursor_y);
-               cursor_x += FONT_BIG_X;
+               segment_a(cursor_x, cursor_y, myfont);
+               segment_b(cursor_x, cursor_y, myfont);
+               segment_c(cursor_x, cursor_y, myfont);
+               if (myfont == big) cursor_x += FONT_BIG_X; else cursor_x += FONT_MEDIUM_X;
                break;
            case 56:  // 8
-               segment_a(cursor_x, cursor_y);
-               segment_b(cursor_x, cursor_y);
-               segment_c(cursor_x, cursor_y);
-               segment_d(cursor_x, cursor_y);
-               segment_e(cursor_x, cursor_y);
-               segment_f(cursor_x, cursor_y);
-               segment_g(cursor_x, cursor_y);
-               cursor_x += FONT_BIG_X;
+               segment_a(cursor_x, cursor_y, myfont);
+               segment_b(cursor_x, cursor_y, myfont);
+               segment_c(cursor_x, cursor_y, myfont);
+               segment_d(cursor_x, cursor_y, myfont);
+               segment_e(cursor_x, cursor_y, myfont);
+               segment_f(cursor_x, cursor_y, myfont);
+               segment_g(cursor_x, cursor_y, myfont);
+               if (myfont == big) cursor_x += FONT_BIG_X; else cursor_x += FONT_MEDIUM_X;
                break;
            case 57:  // 9
-               segment_a(cursor_x, cursor_y);
-               segment_b(cursor_x, cursor_y);
-               segment_c(cursor_x, cursor_y);
-               segment_d(cursor_x, cursor_y);
-               segment_f(cursor_x, cursor_y);
-               segment_g(cursor_x, cursor_y);
-               cursor_x += FONT_BIG_X;
+               segment_a(cursor_x, cursor_y, myfont);
+               segment_b(cursor_x, cursor_y, myfont);
+               segment_c(cursor_x, cursor_y, myfont);
+               segment_d(cursor_x, cursor_y, myfont);
+               segment_f(cursor_x, cursor_y, myfont);
+               segment_g(cursor_x, cursor_y, myfont);
+               if (myfont == big) cursor_x += FONT_BIG_X; else cursor_x += FONT_MEDIUM_X;
                break;
            case 32:
-               cursor_x += FONT_BIG_X;
+               if (myfont == big) cursor_x += FONT_BIG_X; else cursor_x += FONT_MEDIUM_X;
                break;
            case 44:  // , (Komma)
            case 46:  // . (Punkt)
-               segment_p(cursor_x, cursor_y);
-               cursor_x += 5;
+               segment_p(cursor_x, cursor_y, myfont);
+               if (myfont == big) cursor_x += 5; else cursor_x += 4;
                break;
            case 45:  // -
-               segment_g(cursor_x, cursor_y);
-               cursor_x += 12;
+               segment_g(cursor_x, cursor_y, myfont);
+               if (myfont == big) cursor_x += 12; else cursor_x += 8;
                break;   
            case 42: // * (genutzt als °)
-               drawRect(cursor_x,cursor_y+1,3,4,true,true,false);
-               cursor_x += 5;
+               if (myfont == big) {
+                  drawRect(cursor_x,cursor_y+1,3,4,true,true,false);
+                  cursor_x += 5;
+               } else {
+                  drawRect(cursor_x,cursor_y+1,2,3,true,true,false);
+                  cursor_x += 4;
+               }
                break;
        }
     }
@@ -252,50 +349,97 @@ size_t LCD5110::write(uint8_t c){
 	return retval; 
 }
 
-void LCD5110::segment_a(uint8_t _x, uint8_t _y){
-    for (uint8_t x=1; x<12; x++) setPixel(_x+x, _y);
-    for (uint8_t x=2; x<11; x++) setPixel(_x+x, _y+1);
-    for (uint8_t x=3; x<10;  x++) setPixel(_x+x, _y+2);
+void LCD5110::segment_a(uint8_t _x, uint8_t _y, font_t f=big){
+  if (f == big) {
+    for (uint8_t x=0; x<13; x++) setPixel(_x+x, _y);
+    for (uint8_t x=1; x<12; x++) setPixel(_x+x, _y+1);
+    for (uint8_t x=2; x<11; x++) setPixel(_x+x, _y+2);
+  }
+  if (f == medium) {
+    for (uint8_t x=0; x<8; x++) setPixel(_x+x, _y);
+    for (uint8_t x=1; x<7; x++) setPixel(_x+x, _y+1);
+  }
 }
 
-void LCD5110::segment_b(uint8_t _x, uint8_t _y){
-    for (uint8_t y=1; y<12; y++) setPixel(_x+12, _y+y);
-    for (uint8_t y=2; y<12; y++) setPixel(_x+11, _y+y);
-    for (uint8_t y=3; y<11;  y++) setPixel(_x+10, _y+y);
+void LCD5110::segment_b(uint8_t _x, uint8_t _y, font_t f=big){
+  if (f == big) {
+    for (uint8_t y=1; y<11; y++) setPixel(_x+12, _y+y);
+    for (uint8_t y=2; y<10; y++) setPixel(_x+11, _y+y);
+    for (uint8_t y=3; y<9;  y++) setPixel(_x+10, _y+y);
+  }
+  if (f == medium) {
+    for (uint8_t y=1; y<7; y++) setPixel(_x+7, _y+y);
+    for (uint8_t y=2; y<7; y++) setPixel(_x+6, _y+y);
+  }
 }
 
-void LCD5110::segment_c(uint8_t _x, uint8_t _y){
-    for (uint8_t y=13; y<24; y++) setPixel(_x+12, _y+y);
-    for (uint8_t y=13; y<23; y++) setPixel(_x+11, _y+y);
-    for (uint8_t y=14; y<22;  y++) setPixel(_x+10, _y+y);
+void LCD5110::segment_c(uint8_t _x, uint8_t _y, font_t f=big){
+  if (f == big) {
+    for (uint8_t y=12; y<22; y++) setPixel(_x+12, _y+y);
+    for (uint8_t y=13; y<21; y++) setPixel(_x+11, _y+y);
+    for (uint8_t y=14; y<20; y++) setPixel(_x+10, _y+y);
+  }
+  if (f == medium) {
+    for (uint8_t y=7; y<13; y++) setPixel(_x+7, _y+y);
+    for (uint8_t y=8; y<12; y++) setPixel(_x+6, _y+y);
+  }
 }
 
-void LCD5110::segment_d(uint8_t _x, uint8_t _y){
-    for (uint8_t x=3; x<10;  x++) setPixel(_x+x, _y+22);
-    for (uint8_t x=2; x<11; x++) setPixel(_x+x, _y+23);
-    for (uint8_t x=1; x<12; x++) setPixel(_x+x, _y+24);
+void LCD5110::segment_d(uint8_t _x, uint8_t _y, font_t f=big){
+  if (f == big) {
+    for (uint8_t x=2; x<11; x++) setPixel(_x+x, _y+20);
+    for (uint8_t x=1; x<12; x++) setPixel(_x+x, _y+21);
+    for (uint8_t x=0; x<13; x++) setPixel(_x+x, _y+22);
+  }
+  if (f == medium) {
+    for (uint8_t x=1; x<7; x++) setPixel(_x+x, _y+12);
+    for (uint8_t x=0; x<8; x++) setPixel(_x+x, _y+13);
+  }
 }
 
-void LCD5110::segment_e(uint8_t _x, uint8_t _y){
-    for (uint8_t y=13; y<24; y++) setPixel(_x,   _y+y);
-    for (uint8_t y=13; y<23; y++) setPixel(_x+1, _y+y);
-    for (uint8_t y=14; y<22; y++) setPixel(_x+2, _y+y);
+void LCD5110::segment_e(uint8_t _x, uint8_t _y, font_t f=big){
+  if (f == big) {
+    for (uint8_t y=12; y<22; y++) setPixel(_x,   _y+y);
+    for (uint8_t y=13; y<21; y++) setPixel(_x+1, _y+y);
+    for (uint8_t y=14; y<20; y++) setPixel(_x+2, _y+y);
+  }
+  if (f == medium) {
+    for (uint8_t y=7; y<13; y++) setPixel(_x,   _y+y);
+    for (uint8_t y=8; y<12; y++) setPixel(_x+1, _y+y);
+  }
 }
 
-void LCD5110::segment_f(uint8_t _x, uint8_t _y){
-    for (uint8_t y=1; y<12; y++) setPixel(_x,   _y+y);
-    for (uint8_t y=2; y<12; y++) setPixel(_x+1, _y+y);
-    for (uint8_t y=3; y<11;  y++) setPixel(_x+2, _y+y);
+void LCD5110::segment_f(uint8_t _x, uint8_t _y, font_t f=big){
+  if (f == big) {
+    for (uint8_t y=1; y<11; y++) setPixel(_x,   _y+y);
+    for (uint8_t y=2; y<10; y++) setPixel(_x+1, _y+y);
+    for (uint8_t y=3; y<10; y++) setPixel(_x+2, _y+y);
+  }
+  if (f == medium) {
+    for (uint8_t y=1; y<7; y++) setPixel(_x,   _y+y);
+    for (uint8_t y=2; y<6; y++) setPixel(_x+1, _y+y);
+  }
 }
 
-void LCD5110::segment_g(uint8_t _x, uint8_t _y){
-    for (uint8_t x=3; x<10; x++) setPixel(_x+x, _y+11);
-    for (uint8_t x=2; x<11; x++) setPixel(_x+x, _y+12);
-    for (uint8_t x=3; x<10; x++) setPixel(_x+x, _y+13);
+void LCD5110::segment_g(uint8_t _x, uint8_t _y, font_t f=big){
+  if (f == big) {
+    for (uint8_t x=1; x<12; x++) setPixel(_x+x, _y+10);
+    for (uint8_t x=0; x<13; x++) setPixel(_x+x, _y+11);
+    for (uint8_t x=1; x<12; x++) setPixel(_x+x, _y+12);
+  }
+  if (f == medium) {
+    for (uint8_t x=1; x<7; x++) setPixel(_x+x, _y+6);
+    for (uint8_t x=1; x<7; x++) setPixel(_x+x, _y+7);
+  }
 }
 
-void LCD5110::segment_p(uint8_t _x, uint8_t _y){
-    for(uint8_t x=0; x<3; x++) for(uint8_t y=21; y<24; y++) setPixel(x+_x, y+_y);
+void LCD5110::segment_p(uint8_t _x, uint8_t _y, font_t f=big){
+  if (f == big) {
+    for(uint8_t x=0; x<3; x++) for(uint8_t y=20; y<23; y++) setPixel(x+_x, y+_y);
+  }
+  if (f == medium) {  
+    for(uint8_t x=0; x<2; x++) for(uint8_t y=12; y<14; y++) setPixel(x+_x, y+_y);
+  }
 }
 
 void LCD5110::setPixel(uint8_t x, uint8_t y){
