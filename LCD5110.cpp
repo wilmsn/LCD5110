@@ -349,7 +349,7 @@ size_t LCD5110::write(uint8_t c){
 	return retval; 
 }
 
-void LCD5110::segment_a(uint8_t _x, uint8_t _y, font_t f=big){
+void LCD5110::segment_a(uint8_t _x, uint8_t _y, font_t f){
   if (f == big) {
     for (uint8_t x=0; x<13; x++) setPixel(_x+x, _y);
     for (uint8_t x=1; x<12; x++) setPixel(_x+x, _y+1);
@@ -361,7 +361,7 @@ void LCD5110::segment_a(uint8_t _x, uint8_t _y, font_t f=big){
   }
 }
 
-void LCD5110::segment_b(uint8_t _x, uint8_t _y, font_t f=big){
+void LCD5110::segment_b(uint8_t _x, uint8_t _y, font_t f){
   if (f == big) {
     for (uint8_t y=1; y<11; y++) setPixel(_x+12, _y+y);
     for (uint8_t y=2; y<10; y++) setPixel(_x+11, _y+y);
@@ -373,7 +373,7 @@ void LCD5110::segment_b(uint8_t _x, uint8_t _y, font_t f=big){
   }
 }
 
-void LCD5110::segment_c(uint8_t _x, uint8_t _y, font_t f=big){
+void LCD5110::segment_c(uint8_t _x, uint8_t _y, font_t f){
   if (f == big) {
     for (uint8_t y=12; y<22; y++) setPixel(_x+12, _y+y);
     for (uint8_t y=13; y<21; y++) setPixel(_x+11, _y+y);
@@ -385,7 +385,7 @@ void LCD5110::segment_c(uint8_t _x, uint8_t _y, font_t f=big){
   }
 }
 
-void LCD5110::segment_d(uint8_t _x, uint8_t _y, font_t f=big){
+void LCD5110::segment_d(uint8_t _x, uint8_t _y, font_t f){
   if (f == big) {
     for (uint8_t x=2; x<11; x++) setPixel(_x+x, _y+20);
     for (uint8_t x=1; x<12; x++) setPixel(_x+x, _y+21);
@@ -397,7 +397,7 @@ void LCD5110::segment_d(uint8_t _x, uint8_t _y, font_t f=big){
   }
 }
 
-void LCD5110::segment_e(uint8_t _x, uint8_t _y, font_t f=big){
+void LCD5110::segment_e(uint8_t _x, uint8_t _y, font_t f){
   if (f == big) {
     for (uint8_t y=12; y<22; y++) setPixel(_x,   _y+y);
     for (uint8_t y=13; y<21; y++) setPixel(_x+1, _y+y);
@@ -409,7 +409,7 @@ void LCD5110::segment_e(uint8_t _x, uint8_t _y, font_t f=big){
   }
 }
 
-void LCD5110::segment_f(uint8_t _x, uint8_t _y, font_t f=big){
+void LCD5110::segment_f(uint8_t _x, uint8_t _y, font_t f){
   if (f == big) {
     for (uint8_t y=1; y<11; y++) setPixel(_x,   _y+y);
     for (uint8_t y=2; y<10; y++) setPixel(_x+1, _y+y);
@@ -421,7 +421,7 @@ void LCD5110::segment_f(uint8_t _x, uint8_t _y, font_t f=big){
   }
 }
 
-void LCD5110::segment_g(uint8_t _x, uint8_t _y, font_t f=big){
+void LCD5110::segment_g(uint8_t _x, uint8_t _y, font_t f){
   if (f == big) {
     for (uint8_t x=1; x<12; x++) setPixel(_x+x, _y+10);
     for (uint8_t x=0; x<13; x++) setPixel(_x+x, _y+11);
@@ -433,7 +433,7 @@ void LCD5110::segment_g(uint8_t _x, uint8_t _y, font_t f=big){
   }
 }
 
-void LCD5110::segment_p(uint8_t _x, uint8_t _y, font_t f=big){
+void LCD5110::segment_p(uint8_t _x, uint8_t _y, font_t f){
   if (f == big) {
     for(uint8_t x=0; x<3; x++) for(uint8_t y=20; y<23; y++) setPixel(x+_x, y+_y);
   }

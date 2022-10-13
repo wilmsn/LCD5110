@@ -140,14 +140,14 @@ class LCD5110 : public Print {
 //3
 
 //
-        void segment_a(uint8_t x, uint8_t y, font_t f=big);
-        void segment_b(uint8_t x, uint8_t y, font_t f=big);
-        void segment_c(uint8_t x, uint8_t y, font_t f=big);
-        void segment_d(uint8_t x, uint8_t y, font_t f=big);
-        void segment_e(uint8_t x, uint8_t y, font_t f=big);
-        void segment_f(uint8_t x, uint8_t y, font_t f=big);
-        void segment_g(uint8_t x, uint8_t y, font_t f=big);
-        void segment_p(uint8_t x, uint8_t y, font_t f=big);
+        void segment_a(uint8_t x, uint8_t y, font_t f);
+        void segment_b(uint8_t x, uint8_t y, font_t f);
+        void segment_c(uint8_t x, uint8_t y, font_t f);
+        void segment_d(uint8_t x, uint8_t y, font_t f);
+        void segment_e(uint8_t x, uint8_t y, font_t f);
+        void segment_f(uint8_t x, uint8_t y, font_t f);
+        void segment_g(uint8_t x, uint8_t y, font_t f);
+        void segment_p(uint8_t x, uint8_t y, font_t f);
 
     public:
 // Der Konstruktor    
